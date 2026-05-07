@@ -1,0 +1,56 @@
+cp  = "acme"
+env = "demo"
+
+# EC2 key pairs — must exist in each region before apply
+keypair_east = "my-keypair-us-east-1"
+keypair_west = "my-keypair-us-west-2"
+
+# Sensitive — use TF_VAR_ env vars or a secrets manager in production
+fortigate_admin_password = "Fortinet1!"
+ha_password              = "Fortinet1!"
+
+# FortiGate instance config
+fortigate_instance_type = "c5n.xlarge"
+fortios_version         = "7.6"
+license_type            = "payg"
+ha_group_name           = "cloudwan-ha"
+
+# BGP ASNs
+fgt_asn = 65000
+cne_asn = 64512   # Must match asn-ranges in cloud_wan.tf
+
+# Connect Peer inside CIDRs — /29 blocks from 169.254.0.0/16, one per FortiGate
+cne_inside_cidr_east_primary   = "169.254.6.0/29"
+cne_inside_cidr_east_secondary = "169.254.6.8/29"
+cne_inside_cidr_west_primary   = "169.254.7.0/29"
+cne_inside_cidr_west_secondary = "169.254.7.8/29"
+
+# us-east-1 CIDRs
+east_inspection_vpc_cidr          = "10.1.0.0/16"
+east_inspection_public_az1_cidr   = "10.1.1.0/24"
+east_inspection_public_az2_cidr   = "10.1.2.0/24"
+east_inspection_private_az1_cidr  = "10.1.3.0/24"
+east_inspection_private_az2_cidr  = "10.1.4.0/24"
+east_inspection_ha_sync_az1_cidr  = "10.1.5.0/24"
+east_inspection_ha_sync_az2_cidr  = "10.1.6.0/24"
+east_spoke_a_vpc_cidr             = "10.2.0.0/16"
+east_spoke_a_subnet_az1_cidr      = "10.2.1.0/24"
+east_spoke_a_subnet_az2_cidr      = "10.2.2.0/24"
+east_spoke_b_vpc_cidr             = "10.3.0.0/16"
+east_spoke_b_subnet_az1_cidr      = "10.3.1.0/24"
+east_spoke_b_subnet_az2_cidr      = "10.3.2.0/24"
+
+# us-west-2 CIDRs
+west_inspection_vpc_cidr          = "10.11.0.0/16"
+west_inspection_public_az1_cidr   = "10.11.1.0/24"
+west_inspection_public_az2_cidr   = "10.11.2.0/24"
+west_inspection_private_az1_cidr  = "10.11.3.0/24"
+west_inspection_private_az2_cidr  = "10.11.4.0/24"
+west_inspection_ha_sync_az1_cidr  = "10.11.5.0/24"
+west_inspection_ha_sync_az2_cidr  = "10.11.6.0/24"
+west_spoke_a_vpc_cidr             = "10.12.0.0/16"
+west_spoke_a_subnet_az1_cidr      = "10.12.1.0/24"
+west_spoke_a_subnet_az2_cidr      = "10.12.2.0/24"
+west_spoke_b_vpc_cidr             = "10.13.0.0/16"
+west_spoke_b_subnet_az1_cidr      = "10.13.1.0/24"
+west_spoke_b_subnet_az2_cidr      = "10.13.2.0/24"
