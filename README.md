@@ -87,29 +87,42 @@ Spoke A (us-east-1)
 
 ## BGP design
 
+For `NO_ENCAP` (tunnel-less) Connect, there are no GRE tunnel endpoints and no
+link-local addresses. The FortiGate peers directly with the CNE using the CNE's
+subnet gateway address (first IP of the inspection private subnet).
+
 ```
-FortiGate primary (us-east-1)   ASN 65000
-  └─► eBGP neighbor 169.254.6.1 (CNE, ASN 64512)
+FortiGate primary (us-east-1)    ASN 65000
+  └─► eBGP neighbor 10.1.3.1  (east CNE, ASN 64512)
         advertises: 10.2.0.0/16, 10.3.0.0/16
 
-FortiGate secondary (us-east-1) ASN 65000
-  └─► eBGP neighbor 169.254.6.9 (CNE, ASN 64512)
+FortiGate secondary (us-east-1)  ASN 65000
+  └─► eBGP neighbor 10.1.4.1  (east CNE, ASN 64512)
         advertises: 10.2.0.0/16, 10.3.0.0/16
 
-FortiGate primary (us-west-2)   ASN 65000
-  └─► eBGP neighbor 169.254.7.1 (CNE, ASN 64512)
+FortiGate primary (us-west-2)    ASN 65000
+  └─► eBGP neighbor 10.11.3.1 (west CNE, ASN 64513)
         advertises: 10.12.0.0/16, 10.13.0.0/16
 
-FortiGate secondary (us-west-2) ASN 65000
-  └─► eBGP neighbor 169.254.7.9 (CNE, ASN 64512)
+FortiGate secondary (us-west-2)  ASN 65000
+  └─► eBGP neighbor 10.11.4.1 (west CNE, ASN 64513)
         advertises: 10.12.0.0/16, 10.13.0.0/16
 ```
 
-Each FortiGate also installs static routes for its own local and remote spoke CIDRs via port2, and a static route to the CNE inside CIDR via port2 so the BGP session can be established.
+Cloud WAN distributes routes learned from east FortiGates to west attachments
+and vice versa across the backbone. Spoke VPCs use a `0.0.0.0/0` default route
+pointing to the core network ARN; Cloud WAN selects the next hop based on the
+BGP-learned prefixes.
+
+See [BGP_config.md](BGP_config.md) for full rendered FortiGate CLI config and
+Cloud WAN Connect Peer parameters.
 
 ### HA and BGP
 
-Each FortiGate has its own Connect Peer and eBGP session with the CNE. The primary and secondary maintain independent BGP sessions. During FGCP failover, the new primary's BGP session takes over. FortiGate config sync via FGCP may overwrite per-unit BGP config — for production, use FortiManager to manage per-device BGP neighbor configuration.
+Each FortiGate has its own Connect Peer and independent eBGP session with the
+CNE. Primary and secondary run separate sessions simultaneously. During FGCP
+failover the new primary's existing BGP session (already established) handles
+traffic without a reconvergence delay.
 
 ---
 
@@ -125,15 +138,21 @@ Each FortiGate has its own Connect Peer and eBGP session with the CNE. The prima
 ## Deploy
 
 ```bash
-cp terraform.tfvars.example terraform.tfvars
-# Edit terraform.tfvars — set keypair names, passwords
-
 terraform init
-terraform plan
-terraform apply
+
+terraform apply \
+  -var="keypair_east=<your-east-keypair>" \
+  -var="keypair_west=<your-west-keypair>" \
+  -var="fortigate_admin_password=<password>" \
+  -var="ha_password=<password>"
 ```
 
-Cloud WAN Core Network provisioning takes ~10–15 minutes. Total deploy time is approximately 20–25 minutes.
+Cloud WAN Core Network provisioning takes ~10–15 minutes. Total deploy time is
+approximately 20–25 minutes.
+
+> **Note:** On the first apply, spoke VPC routes may fail with
+> `InvalidCoreNetworkArn.NotFound` if VPC attachments are still reaching
+> `AVAILABLE` state. Re-running `terraform apply` immediately resolves this.
 
 ---
 
@@ -165,11 +184,11 @@ diagnose ip router bgp all
 get router info bgp summary
 ```
 
-Expected BGP output on primary FortiGate:
+Expected BGP output on east primary FortiGate:
 
 ```
 Neighbor        V   AS   MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
-169.254.6.1     4 64512      ...             ...              Established  4
+10.1.3.1        4 64512      ...             ...              Established  2
 ```
 
 ---
