@@ -7,41 +7,41 @@ Demonstrates AWS Cloud WAN **tunnel-less Connect** with FortiGate HA pairs in tw
 ## Architecture
 
 ```
-┌─────────────────────── us-east-1 ──────────────────────────┐
-│                                                              │
-│  ┌──────────────┐   ┌──────────────┐   ┌────────────────┐  │
-│  │  Spoke A VPC │   │  Spoke B VPC │   │ Inspection VPC │  │
-│  │  10.2.0.0/16 │   │  10.3.0.0/16 │   │  10.1.0.0/16   │  │
-│  │              │   │              │   │  ┌──────────┐   │  │
-│  │  test inst.  │   │  test inst.  │   │  │FGT Primary│  │  │
-│  └──────┬───────┘   └──────┬───────┘   │  │ (AZ1)    │  │  │
-│         │ Cloud WAN         │ Cloud WAN │  │ port1/2/3│  │  │
-│         │ VPC attach        │ VPC attach│  └──────────┘  │  │
-│         │                   │           │  ┌──────────┐   │  │
-│         └───────────────────┴───────────┤  │FGT Second│  │  │
-│                                         │  │ (AZ2)    │  │  │
-│                                         │  │ port1/2/3│  │  │
-│                                         │  └──────────┘  │  │
-│                                         │  VPC attach +  │  │
-│                                         │  Connect attach│  │
-│                                         │  (NO_ENCAP)    │  │
-└─────────────────────────────────────────┴────────┬────────┘  │
-                                                    │ eBGP      │
-                              ┌─────────────────────┘           │
-                              │   AWS Cloud WAN Core Network     │
-                              │   Global backbone (no tunnels)   │
-                              └─────────────────────┐           │
-                                                    │ eBGP      │
+┌─────────────────────── us-east-1 ───────────────────────────┐
+│                                                             │
+│  ┌──────────────┐    ┌──────────────┐   ┌──────────────── ┐ │
+│  │  Spoke A VPC │    │  Spoke B VPC │   │ Inspection VPC  │ │
+│  │  10.2.0.0/16 │    │  10.3.0.0/16 │   │  10.1.0.0/16    │ │
+│  │              │    │              │   │  ┌───────────┐  │ │
+│  │  test inst.  │    │  test inst.  │   │  │FGT Primary│  │ │
+│  └──────┬───────┘    └──────┬───────┘   │  │ (AZ1)     │  │ │
+│         │ Cloud WAN         │ Cloud WAN │  │ port1/2/3 │  | │
+│         │ VPC attach        │ VPC attach│  └──────────┘   │ │
+│         │                   │           │  ┌──────────┐   │ │
+│         └───────────────────┴───────────┤  │FGT Second│   │ │
+│                                         │  │ (AZ2)    │   │ │
+│                                         │  │ port1/2/3│   │ │
+│                                         │  └──────────┘   │ │
+│                                         │  VPC attach +   │ │
+│                                         │  Connect attach │ │
+│                                         │  (NO_ENCAP)     │ │
+└─────────────────────────────────────────┴────────┬────────┘ │
+                                                    │ eBGP    │
+                              ┌─────────────────────┘         │
+                              │   AWS Cloud WAN Core Network  │
+                              │   Global backbone (no tunnels)│
+                              └─────────────────────┐         │
+                                                    │ eBGP    │
 ┌─────────────────────── us-west-2 ──────────────────────────┐
-│                                         ┌────────┴────────┐  │
-│  ┌──────────────┐   ┌──────────────┐   │ Inspection VPC │  │
-│  │  Spoke A VPC │   │  Spoke B VPC │   │  10.11.0.0/16  │  │
-│  │  10.12.0.0/16│   │  10.13.0.0/16│   │  FGT Primary   │  │
-│  │  test inst.  │   │  test inst.  │   │  FGT Secondary │  │
-│  └──────┬───────┘   └──────┬───────┘   │  (same layout) │  │
-│         │ VPC attach        │ VPC attach└────────────────┘  │
-│         └───────────────────┘                                │
-└──────────────────────────────────────────────────────────────┘
+│                                         ┌────────┴───────┐ │
+│  ┌──────────────┐   ┌──────────────┐    │ Inspection VPC │ │
+│  │  Spoke A VPC │   │  Spoke B VPC │    │  10.11.0.0/16  │ │
+│  │  10.12.0.0/16│   │  10.13.0.0/16│    │  FGT Primary   │ │
+│  │  test inst.  │   │  test inst.  │    │  FGT Secondary │ │
+│  └──────┬───────┘   └──────┬───────┘    │  (same layout) │ │
+│         │ VPC attach       │ VPC attach └────────────────┘ │
+│         └──────────────────┘                               │
+└────────────────────────────────────────────────────────────┘
 ```
 
 ### Per-region inspection VPC detail
@@ -69,17 +69,19 @@ Spoke A (us-east-1)
 
 ## Key components
 
-| Resource | Count | Purpose |
-|---|---|---|
-| `aws_networkmanager_global_network` | 1 | Top-level Cloud WAN container |
-| `aws_networkmanager_core_network` | 1 | Managed backbone, both regions |
-| `aws_networkmanager_vpc_attachment` | 6 | Inspection + 2 spokes × 2 regions |
-| `aws_networkmanager_connect_attachment` | 2 | NO_ENCAP per region (over inspection VPC attachment) |
-| `aws_networkmanager_connect_peer` | 4 | One per FortiGate, eBGP to CNE |
-| `aws_instance` (FortiGate) | 4 | HA primary + secondary × 2 regions |
-| `aws_eip` | 6 | Cluster EIP + 2 mgmt EIPs × 2 regions |
-| `aws_iam_role/policy` | 2 | HA failover — EIP reassignment |
-| `aws_vpc_endpoint` (EC2 API) | 2 | HA failover without internet dependency |
+
+| Resource                                | Count | Purpose                                              |
+| --------------------------------------- | ----- | ---------------------------------------------------- |
+| `aws_networkmanager_global_network`     | 1     | Top-level Cloud WAN container                        |
+| `aws_networkmanager_core_network`       | 1     | Managed backbone, both regions                       |
+| `aws_networkmanager_vpc_attachment`     | 6     | Inspection + 2 spokes × 2 regions                    |
+| `aws_networkmanager_connect_attachment` | 2     | NO_ENCAP per region (over inspection VPC attachment) |
+| `aws_networkmanager_connect_peer`       | 4     | One per FortiGate, eBGP to CNE                       |
+| `aws_instance` (FortiGate)              | 4     | HA primary + secondary × 2 regions                   |
+| `aws_eip`                               | 6     | Cluster EIP + 2 mgmt EIPs × 2 regions                |
+| `aws_iam_role/policy`                   | 2     | HA failover — EIP reassignment                       |
+| `aws_vpc_endpoint` (EC2 API)            | 2     | HA failover without internet dependency              |
+
 
 ---
 
@@ -137,14 +139,16 @@ Cloud WAN Core Network provisioning takes ~10–15 minutes. Total deploy time is
 
 ## CIDR map
 
-| VPC | Region | CIDR |
-|---|---|---|
-| Inspection | us-east-1 | 10.1.0.0/16 |
-| Spoke A | us-east-1 | 10.2.0.0/16 |
-| Spoke B | us-east-1 | 10.3.0.0/16 |
+
+| VPC        | Region    | CIDR         |
+| ---------- | --------- | ------------ |
+| Inspection | us-east-1 | 10.1.0.0/16  |
+| Spoke A    | us-east-1 | 10.2.0.0/16  |
+| Spoke B    | us-east-1 | 10.3.0.0/16  |
 | Inspection | us-west-2 | 10.11.0.0/16 |
-| Spoke A | us-west-2 | 10.12.0.0/16 |
-| Spoke B | us-west-2 | 10.13.0.0/16 |
+| Spoke A    | us-west-2 | 10.12.0.0/16 |
+| Spoke B    | us-west-2 | 10.13.0.0/16 |
+
 
 ---
 
@@ -162,6 +166,7 @@ get router info bgp summary
 ```
 
 Expected BGP output on primary FortiGate:
+
 ```
 Neighbor        V   AS   MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
 169.254.6.1     4 64512      ...             ...              Established  4
