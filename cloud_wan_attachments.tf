@@ -50,8 +50,7 @@ resource "aws_networkmanager_connect_peer" "east_primary" {
   subnet_arn            = module.east.inspection_private_az1_subnet_arn
 
   bgp_options {
-    peer_asn             = var.fgt_asn
-    core_network_address = local.cne_bgp_ip_east_primary
+    peer_asn = var.fgt_asn
   }
 
   tags = merge(local.common_tags, { Name = "${local.name_prefix}-east-fgt-primary-peer" })
@@ -64,8 +63,7 @@ resource "aws_networkmanager_connect_peer" "east_secondary" {
   subnet_arn            = module.east.inspection_private_az2_subnet_arn
 
   bgp_options {
-    peer_asn             = var.fgt_asn
-    core_network_address = local.cne_bgp_ip_east_secondary
+    peer_asn = var.fgt_asn
   }
 
   tags = merge(local.common_tags, { Name = "${local.name_prefix}-east-fgt-secondary-peer" })
@@ -120,8 +118,7 @@ resource "aws_networkmanager_connect_peer" "west_primary" {
   subnet_arn            = module.west.inspection_private_az1_subnet_arn
 
   bgp_options {
-    peer_asn             = var.fgt_asn
-    core_network_address = local.cne_bgp_ip_west_primary
+    peer_asn = var.fgt_asn
   }
 
   tags = merge(local.common_tags, { Name = "${local.name_prefix}-west-fgt-primary-peer" })
@@ -133,8 +130,7 @@ resource "aws_networkmanager_connect_peer" "west_secondary" {
   subnet_arn            = module.west.inspection_private_az2_subnet_arn
 
   bgp_options {
-    peer_asn             = var.fgt_asn
-    core_network_address = local.cne_bgp_ip_west_secondary
+    peer_asn = var.fgt_asn
   }
 
   tags = merge(local.common_tags, { Name = "${local.name_prefix}-west-fgt-secondary-peer" })
