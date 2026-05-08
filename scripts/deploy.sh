@@ -52,8 +52,11 @@ DEPLOY_START=$(now)
 log "━━━ PRE-FLIGHT ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 PREFLIGHT_START=$(now)
 
-aws sts get-caller-identity > /dev/null 2>&1 || die "AWS credentials invalid — run: aws sso login (or export AWS_PROFILE)"
-ok "AWS credentials valid"
+CALLER_OUT=$(aws sts get-caller-identity 2>&1) || {
+    echo "$CALLER_OUT" | tee -a "$LOG_FILE"
+    die "AWS credentials invalid — run: aws_login (or aws sso login / export AWS_PROFILE)"
+}
+ok "AWS credentials valid — $(echo "$CALLER_OUT" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('Account','?'), d.get('Arn','?'))" 2>/dev/null || echo "$CALLER_OUT")"
 
 [[ -f "${TF_DIR}/terraform.tfvars" ]] || die "terraform.tfvars not found in $TF_DIR"
 ok "terraform.tfvars found"
