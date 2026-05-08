@@ -13,8 +13,8 @@ locals {
       "asn-ranges"       = ["${var.cne_asn}-65534"]
       "vpn-ecmp-support" = true
       "edge-locations" = [
-        { location = "us-east-1", asn = var.cne_asn },
-        { location = "us-west-2", asn = var.cne_asn + 1 }
+        { location = "us-east-1", asn = var.cne_asn,     "inside-cidr-blocks" = [var.east_inspection_vpc_cidr] },
+        { location = "us-west-2", asn = var.cne_asn + 1, "inside-cidr-blocks" = [var.west_inspection_vpc_cidr] }
       ]
     }
     segments = [
