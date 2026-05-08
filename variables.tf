@@ -50,11 +50,49 @@ variable "fortios_version" {
 variable "license_type" {
   description = "FortiGate license type: payg or byol"
   type        = string
-  default     = "payg"
+  default     = "byol"
   validation {
     condition     = contains(["payg", "byol"], var.license_type)
     error_message = "license_type must be payg or byol"
   }
+}
+
+variable "fortiflex_username" {
+  description = "FortiFlex API username (UUID)"
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "fortiflex_password" {
+  description = "FortiFlex API password"
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "fortiflex_sn_east_primary" {
+  description = "FortiFlex serial number for us-east-1 primary FortiGate"
+  type        = string
+  default     = ""
+}
+
+variable "fortiflex_sn_east_secondary" {
+  description = "FortiFlex serial number for us-east-1 secondary FortiGate"
+  type        = string
+  default     = ""
+}
+
+variable "fortiflex_sn_west_primary" {
+  description = "FortiFlex serial number for us-west-2 primary FortiGate"
+  type        = string
+  default     = ""
+}
+
+variable "fortiflex_sn_west_secondary" {
+  description = "FortiFlex serial number for us-west-2 secondary FortiGate"
+  type        = string
+  default     = ""
 }
 
 variable "ha_group_name" {

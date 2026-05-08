@@ -30,3 +30,7 @@ override.tf.json
 
 # Claude Code local settings
 .claude/
+
+# Local environment variables (FortiFlex credentials, etc.)
+.env
+.env.*

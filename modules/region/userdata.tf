@@ -53,6 +53,8 @@ locals {
     remote_spoke_a_mask  = local.remote_spoke_a_mask
     remote_spoke_b_net   = local.remote_spoke_b_net
     remote_spoke_b_mask  = local.remote_spoke_b_mask
+
+    fortiflex_sn = var.fortiflex_sn_primary
   })
 
   secondary_userdata = templatefile("${path.module}/templates/fgt_secondary.tpl", {
@@ -84,5 +86,7 @@ locals {
     remote_spoke_a_mask  = local.remote_spoke_a_mask
     remote_spoke_b_net   = local.remote_spoke_b_net
     remote_spoke_b_mask  = local.remote_spoke_b_mask
+
+    fortiflex_sn = var.fortiflex_sn_secondary
   })
 }

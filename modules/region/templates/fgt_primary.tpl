@@ -121,4 +121,8 @@ config firewall policy
     next
 end
 
+%{ if fortiflex_sn != "" ~}
+execute vm-license ${fortiflex_sn}
+execute reboot
+%{ endif ~}
 --==FORTIGATE==--

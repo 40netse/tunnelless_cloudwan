@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Tunnelless CloudWAN — network diagram
+  Generated: 2026-05-08 07:17:10
+  Prefix: acme-demo
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2400 1420" font-family="Arial, sans-serif">
+  <defs>
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   style="stop-color:#C8E6C9"/>
+      <stop offset="100%" style="stop-color:#A5D6A7"/>
+    </linearGradient>
+    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   style="stop-color:#BBDEFB"/>
+      <stop offset="100%" style="stop-color:#90CAF9"/>
+    </linearGradient>
+    <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   style="stop-color:#E1BEE7"/>
+      <stop offset="100%" style="stop-color:#CE93D8"/>
+    </linearGradient>
+    <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   style="stop-color:#FFE0B2"/>
+      <stop offset="100%" style="stop-color:#FFCC80"/>
+    </linearGradient>
+    <linearGradient id="cwGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   style="stop-color:#1A237E"/>
+      <stop offset="50%"  style="stop-color:#283593"/>
+      <stop offset="100%" style="stop-color:#1A237E"/>
+    </linearGradient>
+    <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#1565C0"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#555555"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#EE3124"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="2400" height="1420" fill="#F5F5F5"/>
+
+  <!-- ── Title ── -->
+  <text x="1200" y="42" text-anchor="middle" fill="#1A237E" font-size="28" font-weight="bold">acme-demo — AWS Cloud WAN Tunnelless Connect</text>
+  <text x="1200" y="68" text-anchor="middle" fill="#555555" font-size="16">Generated: 2026-05-08 07:17:10 | FortiGate ASN 65000 | East CNE ASN 64512 | West CNE ASN 64513</text>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       LEFT REGION: us-east-1
+       Region box: (15, 78) w=1105 h=1005
+       ══════════════════════════════════════════════════════════════════════ -->
+  <rect x="15" y="78" width="1105" height="1005" rx="8" fill="#E3F2FD" stroke="#1565C0" stroke-width="2.5" opacity="0.6"/>
+  <text x="35" y="104" fill="#0D47A1" font-size="20" font-weight="bold">us-east-1</text>
+
+  <!-- East Inspection VPC box -->
+  <rect x="30" y="112" width="1075" height="545" rx="6" fill="white" stroke="#3B48CC" stroke-width="2"/>
+  <text x="50" y="137" fill="#1A237E" font-size="18" font-weight="bold">Inspection VPC</text>
+  <text x="50" y="158" fill="#555555" font-size="14">not deployed | 10.1.0.0/16</text>
+
+  <!-- East FGT Primary box -->
+  <rect x="48" y="168" width="490" height="228" rx="5" fill="none" stroke="#EE3124" stroke-width="2"/>
+  <text x="68" y="193" fill="#EE3124" font-size="17" font-weight="bold">FortiGate Primary (AZ1 — port3)</text>
+  <text x="68" y="216" fill="#888888" font-size="14">acme-demo-east-fgt-primary</text>
+  <text x="68" y="237" fill="#333333" font-size="13">ID:    —</text>
+  <text x="68" y="256" fill="#333333" font-size="13">port1: — (cluster EIP)</text>
+  <text x="68" y="275" fill="#333333" font-size="13">port2: 10.1.3.10 (BGP peer)</text>
+  <text x="68" y="294" fill="#333333" font-size="13">port3: — (mgmt EIP)</text>
+  <text x="68" y="316" fill="#555555" font-size="13" font-style="italic">eBGP → 10.1.3.1 (ASN 64512)</text>
+  <text x="68" y="337" fill="#888888" font-size="13">Connect Peer: —</text>
+  <text x="68" y="385" fill="#333333" font-size="13">HA: Active/Primary | FGCP group: acme-demo-east</text>
+
+  <!-- East FGT Secondary box -->
+  <rect x="48" y="410" width="490" height="228" rx="5" fill="none" stroke="#EE3124" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <text x="68" y="435" fill="#EE3124" font-size="17" font-weight="bold">FortiGate Secondary (AZ2 — port3)</text>
+  <text x="68" y="456" fill="#888888" font-size="14">acme-demo-east-fgt-secondary</text>
+  <text x="68" y="477" fill="#333333" font-size="13">ID:    —</text>
+  <text x="68" y="496" fill="#333333" font-size="13">port1: — (no EIP on standby)</text>
+  <text x="68" y="515" fill="#333333" font-size="13">port2: 10.1.4.10 (BGP peer)</text>
+  <text x="68" y="534" fill="#333333" font-size="13">port3: — (mgmt EIP)</text>
+  <text x="68" y="556" fill="#555555" font-size="13" font-style="italic">eBGP → 10.1.4.1 (ASN 64512)</text>
+  <text x="68" y="577" fill="#888888" font-size="13">Connect Peer: —</text>
+
+  <!-- East Inspection VPC subnet panel -->
+  <!-- Public subnets -->
+  <rect x="558" y="168" width="240" height="88" rx="4" fill="url(#greenGrad)"/>
+  <text x="678" y="192" text-anchor="middle" fill="#1B5E20" font-size="14" font-weight="bold">Public AZ1</text>
+  <text x="678" y="212" text-anchor="middle" fill="#333333" font-size="13">10.1.1.0/24</text>
+  <text x="678" y="230" text-anchor="middle" fill="#555555" font-size="12">port1 / IGW / EIP</text>
+  <text x="678" y="248" text-anchor="middle" fill="#777777" font-size="11">0.0.0.0/0 → IGW</text>
+
+  <rect x="812" y="168" width="240" height="88" rx="4" fill="url(#greenGrad)"/>
+  <text x="932" y="192" text-anchor="middle" fill="#1B5E20" font-size="14" font-weight="bold">Public AZ2</text>
+  <text x="932" y="212" text-anchor="middle" fill="#333333" font-size="13">10.1.2.0/24</text>
+  <text x="932" y="230" text-anchor="middle" fill="#555555" font-size="12">port1 (standby)</text>
+  <text x="932" y="248" text-anchor="middle" fill="#777777" font-size="11">0.0.0.0/0 → IGW</text>
+
+  <!-- Private subnets -->
+  <rect x="558" y="270" width="240" height="88" rx="4" fill="url(#blueGrad)"/>
+  <text x="678" y="294" text-anchor="middle" fill="#0D47A1" font-size="14" font-weight="bold">Private AZ1</text>
+  <text x="678" y="314" text-anchor="middle" fill="#333333" font-size="13">10.1.3.0/24</text>
+  <text x="678" y="332" text-anchor="middle" fill="#555555" font-size="12">port2 / CW VPC attach</text>
+  <text x="678" y="350" text-anchor="middle" fill="#777777" font-size="11">CNE BGP: 10.1.3.1</text>
+
+  <rect x="812" y="270" width="240" height="88" rx="4" fill="url(#blueGrad)"/>
+  <text x="932" y="294" text-anchor="middle" fill="#0D47A1" font-size="14" font-weight="bold">Private AZ2</text>
+  <text x="932" y="314" text-anchor="middle" fill="#333333" font-size="13">10.1.4.0/24</text>
+  <text x="932" y="332" text-anchor="middle" fill="#555555" font-size="12">port2 / CW VPC attach</text>
+  <text x="932" y="350" text-anchor="middle" fill="#777777" font-size="11">CNE BGP: 10.1.4.1</text>
+
+  <!-- HA sync subnets -->
+  <rect x="558" y="372" width="240" height="88" rx="4" fill="url(#orangeGrad)"/>
+  <text x="678" y="396" text-anchor="middle" fill="#E65100" font-size="14" font-weight="bold">HA-sync AZ1</text>
+  <text x="678" y="416" text-anchor="middle" fill="#333333" font-size="13">10.1.5.0/24</text>
+  <text x="678" y="434" text-anchor="middle" fill="#555555" font-size="12">port3 / FGCP heartbeat</text>
+  <text x="678" y="452" text-anchor="middle" fill="#777777" font-size="11">EC2 endpoint / mgmt</text>
+
+  <rect x="812" y="372" width="240" height="88" rx="4" fill="url(#orangeGrad)"/>
+  <text x="932" y="396" text-anchor="middle" fill="#E65100" font-size="14" font-weight="bold">HA-sync AZ2</text>
+  <text x="932" y="416" text-anchor="middle" fill="#333333" font-size="13">10.1.6.0/24</text>
+  <text x="932" y="434" text-anchor="middle" fill="#555555" font-size="12">port3 / FGCP heartbeat</text>
+  <text x="932" y="452" text-anchor="middle" fill="#777777" font-size="11">EC2 endpoint / mgmt</text>
+
+  <!-- East Connect + VPC attachment labels -->
+  <rect x="558" y="474" width="494" height="44" rx="4" fill="url(#purpleGrad)"/>
+  <text x="805" y="492" text-anchor="middle" fill="#4A148C" font-size="13" font-weight="bold">Connect Attachment (NO_ENCAP) — over inspection VPC attachment</text>
+  <text x="805" y="511" text-anchor="middle" fill="#4A148C" font-size="12">2 Connect Peers: primary (.10 AZ1) + secondary (.10 AZ2) | ASN 65000</text>
+
+  <rect x="558" y="524" width="494" height="38" rx="4" fill="#E8EAF6" stroke="#7986CB" stroke-width="1"/>
+  <text x="805" y="547" text-anchor="middle" fill="#283593" font-size="13">VPC Attachment (inspection) — not deployed</text>
+
+  <!-- East Spoke A VPC -->
+  <rect x="30" y="672" width="510" height="238" rx="6" fill="white" stroke="#2E7D32" stroke-width="1.5"/>
+  <text x="50" y="698" fill="#1B5E20" font-size="17" font-weight="bold">Spoke A VPC</text>
+  <text x="50" y="718" fill="#555555" font-size="13">not deployed</text>
+  <text x="50" y="737" fill="#333333" font-size="14">10.2.0.0/16</text>
+  <text x="50" y="762" fill="#555555" font-size="13">Test instance</text>
+  <text x="50" y="794" fill="#777777" font-size="13">0.0.0.0/0 → Core Network</text>
+  <text x="50" y="815" fill="#777777" font-size="12" font-style="italic">(VPC attachment to Cloud WAN)</text>
+  <rect x="50" y="850" width="470" height="44" rx="3" fill="#E8EAF6" stroke="#7986CB" stroke-width="1"/>
+  <text x="285" y="877" text-anchor="middle" fill="#283593" font-size="13">VPC Attachment → Cloud WAN | segment: production</text>
+
+  <!-- East Spoke B VPC -->
+  <rect x="560" y="672" width="510" height="238" rx="6" fill="white" stroke="#2E7D32" stroke-width="1.5"/>
+  <text x="580" y="698" fill="#1B5E20" font-size="17" font-weight="bold">Spoke B VPC</text>
+  <text x="580" y="718" fill="#555555" font-size="13">not deployed</text>
+  <text x="580" y="737" fill="#333333" font-size="14">10.3.0.0/16</text>
+  <text x="580" y="762" fill="#555555" font-size="13">Test instance</text>
+  <text x="580" y="794" fill="#777777" font-size="13">0.0.0.0/0 → Core Network</text>
+  <text x="580" y="815" fill="#777777" font-size="12" font-style="italic">(VPC attachment to Cloud WAN)</text>
+  <rect x="580" y="850" width="470" height="44" rx="3" fill="#E8EAF6" stroke="#7986CB" stroke-width="1"/>
+  <text x="815" y="877" text-anchor="middle" fill="#283593" font-size="13">VPC Attachment → Cloud WAN | segment: production</text>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       RIGHT REGION: us-west-2
+       Region box: (1280, 78) w=1105 h=1005
+       ══════════════════════════════════════════════════════════════════════ -->
+  <rect x="1280" y="78" width="1105" height="1005" rx="8" fill="#FFF3E0" stroke="#E65100" stroke-width="2.5" opacity="0.6"/>
+  <text x="1300" y="104" fill="#BF360C" font-size="20" font-weight="bold">us-west-2</text>
+
+  <!-- West Inspection VPC box -->
+  <rect x="1295" y="112" width="1075" height="545" rx="6" fill="white" stroke="#3B48CC" stroke-width="2"/>
+  <text x="1315" y="137" fill="#1A237E" font-size="18" font-weight="bold">Inspection VPC</text>
+  <text x="1315" y="158" fill="#555555" font-size="14">not deployed | 10.11.0.0/16</text>
+
+  <!-- West FGT Primary box -->
+  <rect x="1313" y="168" width="490" height="228" rx="5" fill="none" stroke="#EE3124" stroke-width="2"/>
+  <text x="1333" y="193" fill="#EE3124" font-size="17" font-weight="bold">FortiGate Primary (AZ1 — port3)</text>
+  <text x="1333" y="216" fill="#888888" font-size="14">acme-demo-west-fgt-primary</text>
+  <text x="1333" y="237" fill="#333333" font-size="13">ID:    —</text>
+  <text x="1333" y="256" fill="#333333" font-size="13">port1: — (cluster EIP)</text>
+  <text x="1333" y="275" fill="#333333" font-size="13">port2: 10.11.3.10 (BGP peer)</text>
+  <text x="1333" y="294" fill="#333333" font-size="13">port3: — (mgmt EIP)</text>
+  <text x="1333" y="316" fill="#555555" font-size="13" font-style="italic">eBGP → 10.11.3.1 (ASN 64513)</text>
+  <text x="1333" y="337" fill="#888888" font-size="13">Connect Peer: —</text>
+  <text x="1333" y="385" fill="#333333" font-size="13">HA: Active/Primary | FGCP group: acme-demo-west</text>
+
+  <!-- West FGT Secondary box -->
+  <rect x="1313" y="410" width="490" height="228" rx="5" fill="none" stroke="#EE3124" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <text x="1333" y="435" fill="#EE3124" font-size="17" font-weight="bold">FortiGate Secondary (AZ2 — port3)</text>
+  <text x="1333" y="456" fill="#888888" font-size="14">acme-demo-west-fgt-secondary</text>
+  <text x="1333" y="477" fill="#333333" font-size="13">ID:    —</text>
+  <text x="1333" y="496" fill="#333333" font-size="13">port1: — (no EIP on standby)</text>
+  <text x="1333" y="515" fill="#333333" font-size="13">port2: 10.11.4.10 (BGP peer)</text>
+  <text x="1333" y="534" fill="#333333" font-size="13">port3: — (mgmt EIP)</text>
+  <text x="1333" y="556" fill="#555555" font-size="13" font-style="italic">eBGP → 10.11.4.1 (ASN 64513)</text>
+  <text x="1333" y="577" fill="#888888" font-size="13">Connect Peer: —</text>
+
+  <!-- West Inspection VPC subnet panel -->
+  <rect x="1823" y="168" width="240" height="88" rx="4" fill="url(#greenGrad)"/>
+  <text x="1943" y="192" text-anchor="middle" fill="#1B5E20" font-size="14" font-weight="bold">Public AZ1</text>
+  <text x="1943" y="212" text-anchor="middle" fill="#333333" font-size="13">10.11.1.0/24</text>
+  <text x="1943" y="230" text-anchor="middle" fill="#555555" font-size="12">port1 / IGW / EIP</text>
+  <text x="1943" y="248" text-anchor="middle" fill="#777777" font-size="11">0.0.0.0/0 → IGW</text>
+
+  <rect x="2077" y="168" width="240" height="88" rx="4" fill="url(#greenGrad)"/>
+  <text x="2197" y="192" text-anchor="middle" fill="#1B5E20" font-size="14" font-weight="bold">Public AZ2</text>
+  <text x="2197" y="212" text-anchor="middle" fill="#333333" font-size="13">10.11.2.0/24</text>
+  <text x="2197" y="230" text-anchor="middle" fill="#555555" font-size="12">port1 (standby)</text>
+  <text x="2197" y="248" text-anchor="middle" fill="#777777" font-size="11">0.0.0.0/0 → IGW</text>
+
+  <rect x="1823" y="270" width="240" height="88" rx="4" fill="url(#blueGrad)"/>
+  <text x="1943" y="294" text-anchor="middle" fill="#0D47A1" font-size="14" font-weight="bold">Private AZ1</text>
+  <text x="1943" y="314" text-anchor="middle" fill="#333333" font-size="13">10.11.3.0/24</text>
+  <text x="1943" y="332" text-anchor="middle" fill="#555555" font-size="12">port2 / CW VPC attach</text>
+  <text x="1943" y="350" text-anchor="middle" fill="#777777" font-size="11">CNE BGP: 10.11.3.1</text>
+
+  <rect x="2077" y="270" width="240" height="88" rx="4" fill="url(#blueGrad)"/>
+  <text x="2197" y="294" text-anchor="middle" fill="#0D47A1" font-size="14" font-weight="bold">Private AZ2</text>
+  <text x="2197" y="314" text-anchor="middle" fill="#333333" font-size="13">10.11.4.0/24</text>
+  <text x="2197" y="332" text-anchor="middle" fill="#555555" font-size="12">port2 / CW VPC attach</text>
+  <text x="2197" y="350" text-anchor="middle" fill="#777777" font-size="11">CNE BGP: 10.11.4.1</text>
+
+  <rect x="1823" y="372" width="240" height="88" rx="4" fill="url(#orangeGrad)"/>
+  <text x="1943" y="396" text-anchor="middle" fill="#E65100" font-size="14" font-weight="bold">HA-sync AZ1</text>
+  <text x="1943" y="416" text-anchor="middle" fill="#333333" font-size="13">10.11.5.0/24</text>
+  <text x="1943" y="434" text-anchor="middle" fill="#555555" font-size="12">port3 / FGCP heartbeat</text>
+  <text x="1943" y="452" text-anchor="middle" fill="#777777" font-size="11">EC2 endpoint / mgmt</text>
+
+  <rect x="2077" y="372" width="240" height="88" rx="4" fill="url(#orangeGrad)"/>
+  <text x="2197" y="396" text-anchor="middle" fill="#E65100" font-size="14" font-weight="bold">HA-sync AZ2</text>
+  <text x="2197" y="416" text-anchor="middle" fill="#333333" font-size="13">10.11.6.0/24</text>
+  <text x="2197" y="434" text-anchor="middle" fill="#555555" font-size="12">port3 / FGCP heartbeat</text>
+  <text x="2197" y="452" text-anchor="middle" fill="#777777" font-size="11">EC2 endpoint / mgmt</text>
+
+  <rect x="1823" y="474" width="494" height="44" rx="4" fill="url(#purpleGrad)"/>
+  <text x="2070" y="492" text-anchor="middle" fill="#4A148C" font-size="13" font-weight="bold">Connect Attachment (NO_ENCAP) — over inspection VPC attachment</text>
+  <text x="2070" y="511" text-anchor="middle" fill="#4A148C" font-size="12">2 Connect Peers: primary (.10 AZ1) + secondary (.10 AZ2) | ASN 65000</text>
+
+  <rect x="1823" y="524" width="494" height="38" rx="4" fill="#E8EAF6" stroke="#7986CB" stroke-width="1"/>
+  <text x="2070" y="547" text-anchor="middle" fill="#283593" font-size="13">VPC Attachment (inspection) — not deployed</text>
+
+  <!-- West Spoke A VPC -->
+  <rect x="1295" y="672" width="510" height="238" rx="6" fill="white" stroke="#2E7D32" stroke-width="1.5"/>
+  <text x="1315" y="698" fill="#1B5E20" font-size="17" font-weight="bold">Spoke A VPC</text>
+  <text x="1315" y="718" fill="#555555" font-size="13">not deployed</text>
+  <text x="1315" y="737" fill="#333333" font-size="14">10.12.0.0/16</text>
+  <text x="1315" y="762" fill="#555555" font-size="13">Test instance</text>
+  <text x="1315" y="794" fill="#777777" font-size="13">0.0.0.0/0 → Core Network</text>
+  <text x="1315" y="815" fill="#777777" font-size="12" font-style="italic">(VPC attachment to Cloud WAN)</text>
+  <rect x="1315" y="850" width="470" height="44" rx="3" fill="#E8EAF6" stroke="#7986CB" stroke-width="1"/>
+  <text x="1550" y="877" text-anchor="middle" fill="#283593" font-size="13">VPC Attachment → Cloud WAN | segment: production</text>
+
+  <!-- West Spoke B VPC -->
+  <rect x="1825" y="672" width="510" height="238" rx="6" fill="white" stroke="#2E7D32" stroke-width="1.5"/>
+  <text x="1845" y="698" fill="#1B5E20" font-size="17" font-weight="bold">Spoke B VPC</text>
+  <text x="1845" y="718" fill="#555555" font-size="13">not deployed</text>
+  <text x="1845" y="737" fill="#333333" font-size="14">10.13.0.0/16</text>
+  <text x="1845" y="762" fill="#555555" font-size="13">Test instance</text>
+  <text x="1845" y="794" fill="#777777" font-size="13">0.0.0.0/0 → Core Network</text>
+  <text x="1845" y="815" fill="#777777" font-size="12" font-style="italic">(VPC attachment to Cloud WAN)</text>
+  <rect x="1845" y="850" width="470" height="44" rx="3" fill="#E8EAF6" stroke="#7986CB" stroke-width="1"/>
+  <text x="2080" y="877" text-anchor="middle" fill="#283593" font-size="13">VPC Attachment → Cloud WAN | segment: production</text>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       CONNECTION LINES (inspection VPCs + spokes → Cloud WAN)
+       ══════════════════════════════════════════════════════════════════════ -->
+
+  <!-- East inspection VPC eBGP → Cloud WAN (from FGT area center x≈295) -->
+  <line x1="295" y1="657" x2="295" y2="1105"
+        stroke="#EE3124" stroke-width="2" stroke-dasharray="8,4"
+        marker-end="url(#arrowRed)"/>
+  <rect x="200" y="860" width="190" height="28" rx="4" fill="white" opacity="0.85"/>
+  <text x="295" y="878" text-anchor="middle" fill="#EE3124" font-size="13" font-weight="bold">eBGP / Connect</text>
+
+  <!-- East Spoke A → Cloud WAN -->
+  <line x1="285" y1="910" x2="285" y2="1105"
+        stroke="#283593" stroke-width="1.5" stroke-dasharray="5,3"
+        marker-end="url(#arrowBlue)"/>
+  <rect x="172" y="960" width="226" height="24" rx="3" fill="white" opacity="0.85"/>
+  <text x="285" y="976" text-anchor="middle" fill="#283593" font-size="12">VPC Attach (spoke-a)</text>
+
+  <!-- East Spoke B → Cloud WAN -->
+  <line x1="815" y1="910" x2="815" y2="1105"
+        stroke="#283593" stroke-width="1.5" stroke-dasharray="5,3"
+        marker-end="url(#arrowBlue)"/>
+  <rect x="702" y="960" width="226" height="24" rx="3" fill="white" opacity="0.85"/>
+  <text x="815" y="976" text-anchor="middle" fill="#283593" font-size="12">VPC Attach (spoke-b)</text>
+
+  <!-- West inspection VPC eBGP → Cloud WAN (from FGT area center x≈1560) -->
+  <line x1="1560" y1="657" x2="1560" y2="1105"
+        stroke="#EE3124" stroke-width="2" stroke-dasharray="8,4"
+        marker-end="url(#arrowRed)"/>
+  <rect x="1460" y="860" width="200" height="28" rx="4" fill="white" opacity="0.85"/>
+  <text x="1560" y="878" text-anchor="middle" fill="#EE3124" font-size="13" font-weight="bold">eBGP / Connect</text>
+
+  <!-- West Spoke A → Cloud WAN -->
+  <line x1="1550" y1="910" x2="1550" y2="1105"
+        stroke="#283593" stroke-width="1.5" stroke-dasharray="5,3"
+        marker-end="url(#arrowBlue)"/>
+  <rect x="1437" y="960" width="226" height="24" rx="3" fill="white" opacity="0.85"/>
+  <text x="1550" y="976" text-anchor="middle" fill="#283593" font-size="12">VPC Attach (spoke-a)</text>
+
+  <!-- West Spoke B → Cloud WAN -->
+  <line x1="2080" y1="910" x2="2080" y2="1105"
+        stroke="#283593" stroke-width="1.5" stroke-dasharray="5,3"
+        marker-end="url(#arrowBlue)"/>
+  <rect x="1967" y="960" width="226" height="24" rx="3" fill="white" opacity="0.85"/>
+  <text x="2080" y="976" text-anchor="middle" fill="#283593" font-size="12">VPC Attach (spoke-b)</text>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       AWS CLOUD WAN BACKBONE
+       Box: (15, 1108) w=2370 h=268
+       ══════════════════════════════════════════════════════════════════════ -->
+  <rect x="15" y="1108" width="2370" height="268" rx="8" fill="url(#cwGrad)"/>
+  <text x="1200" y="1148" text-anchor="middle" fill="#FFFFFF" font-size="22" font-weight="bold">AWS Cloud WAN — Global Backbone (no tunnels)</text>
+  <text x="1200" y="1174" text-anchor="middle" fill="#90CAF9" font-size="15">Global Network: not deployed | Core Network: not deployed</text>
+  <text x="1200" y="1196" text-anchor="middle" fill="#90CAF9" font-size="14">Segment: production | isolate-attachments: false | Routes distributed automatically</text>
+
+  <!-- East CNE box -->
+  <rect x="80" y="1215" width="480" height="140" rx="6" fill="#283593" stroke="#90CAF9" stroke-width="1.5"/>
+  <text x="320" y="1242" text-anchor="middle" fill="#FFFFFF" font-size="16" font-weight="bold">Core Network Edge — us-east-1</text>
+  <text x="320" y="1264" text-anchor="middle" fill="#90CAF9" font-size="14">ASN 64512</text>
+  <text x="320" y="1286" text-anchor="middle" fill="#BBDEFB" font-size="13">Primary peer: 10.1.3.10 → 10.1.3.1</text>
+  <text x="320" y="1306" text-anchor="middle" fill="#BBDEFB" font-size="13">Secondary peer: 10.1.4.10 → 10.1.4.1</text>
+  <text x="320" y="1326" text-anchor="middle" fill="#BBDEFB" font-size="13">Advertises: 10.12.0.0/16, 10.13.0.0/16</text>
+  <text x="320" y="1344" text-anchor="middle" fill="#90EE90" font-size="12">Receives: 10.2.0.0/16, 10.3.0.0/16 (from west)</text>
+
+  <!-- Cloud WAN middle label -->
+  <text x="1200" y="1280" text-anchor="middle" fill="#90CAF9" font-size="14" font-style="italic">AWS Global Network — routes distributed via BGP across backbone</text>
+  <line x1="560" y1="1285" x2="900" y2="1285" stroke="#90CAF9" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="1500" y1="1285" x2="1840" y2="1285" stroke="#90CAF9" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- West CNE box -->
+  <rect x="1840" y="1215" width="480" height="140" rx="6" fill="#BF360C" stroke="#FFCC80" stroke-width="1.5"/>
+  <text x="2080" y="1242" text-anchor="middle" fill="#FFFFFF" font-size="16" font-weight="bold">Core Network Edge — us-west-2</text>
+  <text x="2080" y="1264" text-anchor="middle" fill="#FFCC80" font-size="14">ASN 64513</text>
+  <text x="2080" y="1286" text-anchor="middle" fill="#FFE0B2" font-size="13">Primary peer: 10.11.3.10 → 10.11.3.1</text>
+  <text x="2080" y="1306" text-anchor="middle" fill="#FFE0B2" font-size="13">Secondary peer: 10.11.4.10 → 10.11.4.1</text>
+  <text x="2080" y="1326" text-anchor="middle" fill="#FFE0B2" font-size="13">Advertises: 10.2.0.0/16, 10.3.0.0/16</text>
+  <text x="2080" y="1344" text-anchor="middle" fill="#90EE90" font-size="12">Receives: 10.12.0.0/16, 10.13.0.0/16 (from east)</text>
+
+  <!-- ── Legend ── -->
+  <rect x="15" y="1392" width="2370" height="20" rx="3" fill="#E0E0E0"/>
+  <text x="50"   y="1406" fill="#333333" font-size="11">— — — eBGP / Connect (NO_ENCAP, tunnel-less)</text>
+  <text x="450"  y="1406" fill="#283593" font-size="11">───  VPC Attachment (direct to Cloud WAN, no TGW)</text>
+  <text x="900"  y="1406" fill="#EE3124" font-size="11">■ FortiGate HA pair (FGCP active-passive)</text>
+  <text x="1300" y="1406" fill="#2E7D32" font-size="11">□ Spoke VPCs (default route → Core Network ARN)</text>
+  <text x="1800" y="1406" fill="#333333" font-size="11">Generated: 2026-05-08 07:17:10</text>
+
+</svg>

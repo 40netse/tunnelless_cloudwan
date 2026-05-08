@@ -80,3 +80,15 @@ variable "fortigate_instance_type" { type = string }
 variable "fortios_version" { type = string }
 variable "license_type" { type = string }
 variable "fgt_asn" { type = number }
+
+variable "fortiflex_sn_primary" {
+  description = "FortiFlex serial number for the primary FortiGate"
+  type        = string
+  default     = ""
+}
+
+variable "fortiflex_sn_secondary" {
+  description = "FortiFlex serial number for the secondary FortiGate"
+  type        = string
+  default     = ""
+}

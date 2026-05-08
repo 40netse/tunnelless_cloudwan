@@ -46,6 +46,8 @@ module "east" {
   fortios_version          = var.fortios_version
   license_type             = var.license_type
   fgt_asn                  = var.fgt_asn
+  fortiflex_sn_primary     = var.fortiflex_sn_east_primary
+  fortiflex_sn_secondary   = var.fortiflex_sn_east_secondary
 }
 
 module "west" {
@@ -96,4 +98,6 @@ module "west" {
   fortios_version          = var.fortios_version
   license_type             = var.license_type
   fgt_asn                  = var.fgt_asn
+  fortiflex_sn_primary     = var.fortiflex_sn_west_primary
+  fortiflex_sn_secondary   = var.fortiflex_sn_west_secondary
 }
