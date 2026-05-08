@@ -71,7 +71,8 @@ log "━━━ INIT ━━━━━━━━━━━━━━━━━━━━
 INIT_START=$(now)
 cd "$TF_DIR"
 run_tf "init" terraform init -upgrade
-ok "Init complete ($(elapsed $INIT_START $(now)))"
+INIT_END=$(now)
+ok "Init complete ($(elapsed $INIT_START $INIT_END))"
 
 # ── Apply — pass 1 ────────────────────────────────────────────────────────────
 # Cloud WAN Core Network provisioning takes 10–15 min.
@@ -96,6 +97,7 @@ ok "Apply pass 2 complete ($(elapsed $APPLY2_START $APPLY2_END))"
 
 # ── Capture outputs ────────────────────────────────────────────────────────────
 log "━━━ CAPTURING OUTPUTS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+OUTPUTS_START=$(now)
 cd "$TF_DIR"
 TF_OUTPUTS=$(terraform output -json 2>>"$LOG_FILE" || echo "{}")
 
@@ -117,6 +119,8 @@ EAST_SEC_PEER=$(tf_output "east_connect_peer_secondary_id")
 WEST_PRI_PEER=$(tf_output "west_connect_peer_primary_id")
 WEST_SEC_PEER=$(tf_output "west_connect_peer_secondary_id")
 
+OUTPUTS_END=$(now)
+ok "Outputs captured ($(elapsed $OUTPUTS_START $OUTPUTS_END))"
 ok "Core Network: $CORE_NET_ID"
 ok "East primary:   $EAST_PRI_MGMT"
 ok "East secondary: $EAST_SEC_MGMT"
@@ -135,10 +139,9 @@ fi
 DIAGRAM_END=$(now)
 ok "Network diagram complete ($(elapsed $DIAGRAM_START $DIAGRAM_END))"
 
-DEPLOY_END=$(now)
-
 # ── Build report ───────────────────────────────────────────────────────────────
 log "━━━ DEPLOY REPORT ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+REPORT_START=$(now)
 
 cat > "$REPORT_FILE" << REPORT
 ================================================================================
@@ -176,19 +179,24 @@ cat > "$REPORT_FILE" << REPORT
   Docs : ${TF_DIR}/network_diagram.md
 
 ── Timing ────────────────────────────────────────────────────────────────────────
-  Pre-flight  : $(elapsed $PREFLIGHT_START $PREFLIGHT_END)
-  Init        : $(elapsed $INIT_START $APPLY1_START)
-  Apply pass 1: $(elapsed $APPLY1_START $APPLY1_END)
-  Apply pass 2: $(elapsed $APPLY2_START $APPLY2_END)
-  Diagram     : $(elapsed $DIAGRAM_START $DIAGRAM_END)
+  Pre-flight    : $(elapsed $PREFLIGHT_START $PREFLIGHT_END)
+  Init          : $(elapsed $INIT_START $INIT_END)
+  Apply pass 1  : $(elapsed $APPLY1_START $APPLY1_END)
+  Apply pass 2  : $(elapsed $APPLY2_START $APPLY2_END)
+  Output capture: $(elapsed $OUTPUTS_START $OUTPUTS_END)
+  Diagram       : $(elapsed $DIAGRAM_START $DIAGRAM_END)
+  Report build  : $(elapsed $REPORT_START $REPORT_END)
   ──────────────────────────────────────────
-  TOTAL       : $(elapsed $DEPLOY_START $DEPLOY_END)
+  TOTAL         : $(elapsed $DEPLOY_START $REPORT_END)
 
 ================================================================================
   DEPLOY COMPLETE  —  $(date)
   Re-authenticate if needed, then run: bash scripts/teardown.sh
 ================================================================================
 REPORT
+
+REPORT_END=$(now)
+ok "Report complete ($(elapsed $REPORT_START $REPORT_END))"
 
 cat "$REPORT_FILE" | tee -a "$LOG_FILE"
 
