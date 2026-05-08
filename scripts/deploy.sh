@@ -84,9 +84,14 @@ ok "Init complete ($(elapsed $INIT_START $INIT_END))"
 log "━━━ APPLY PASS 1 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 log "Note: Cloud WAN Core Network provisioning takes ~10–15 minutes."
 APPLY1_START=$(now)
-run_tf "apply pass 1" terraform apply -auto-approve
+terraform apply -auto-approve 2>&1 | tee -a "$LOG_FILE"
+APPLY1_RC=${PIPESTATUS[0]}
 APPLY1_END=$(now)
-ok "Apply pass 1 complete ($(elapsed $APPLY1_START $APPLY1_END))"
+if [[ $APPLY1_RC -ne 0 ]]; then
+    warn "Apply pass 1 had errors ($(elapsed $APPLY1_START $APPLY1_END)) — expected InvalidCoreNetworkArn.NotFound on routes; pass 2 converges"
+else
+    ok "Apply pass 1 complete ($(elapsed $APPLY1_START $APPLY1_END))"
+fi
 
 # ── Apply — pass 2 ────────────────────────────────────────────────────────────
 # Spoke VPC routes (0.0.0.0/0 → core_network_arn) sometimes fail on pass 1 if
