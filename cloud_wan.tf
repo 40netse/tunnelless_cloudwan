@@ -10,11 +10,15 @@ locals {
   core_network_policy_json = jsonencode({
     version = "2021.12"
     "core-network-configuration" = {
-      "asn-ranges"       = ["${var.cne_asn}-65534"]
-      "vpn-ecmp-support" = true
+      "asn-ranges"         = ["${var.cne_asn}-65534"]
+      "vpn-ecmp-support"   = true
+      # Global CIDR pool required for Connect Peer CIDR association (NO_ENCAP).
+      # Must be RFC 1918, not 169.254.x.x or 100.64.x.x (both restricted by AWS).
+      # Must not overlap with any attached VPC CIDRs (10.1-13.x.x).
+      "inside-cidr-blocks" = ["10.100.0.0/16"]
       "edge-locations" = [
-        { location = "us-east-1", asn = var.cne_asn,     "inside-cidr-blocks" = ["169.254.100.0/24"] },
-        { location = "us-west-2", asn = var.cne_asn + 1, "inside-cidr-blocks" = ["169.254.101.0/24"] }
+        { location = "us-east-1", asn = var.cne_asn },
+        { location = "us-west-2", asn = var.cne_asn + 1 }
       ]
     }
     segments = [
