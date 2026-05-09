@@ -34,3 +34,12 @@ override.tf.json
 # Local environment variables (FortiFlex credentials, etc.)
 .env
 .env.*
+
+# Deploy logs, reports, and state
+deploy_log_*.txt
+deploy_report_*.txt
+.deploy_state.env
+
+# Network diagrams (generated artifacts)
+network_diagram.md
+network_diagram.svg
